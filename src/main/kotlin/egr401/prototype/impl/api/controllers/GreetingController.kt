@@ -1,4 +1,4 @@
-package egr401.prototype.impl.controllers
+package egr401.prototype.impl.api.controllers
 
 import egr401.prototype.data.model.Greeting
 import org.springframework.web.bind.annotation.PathVariable
