@@ -1,0 +1,8 @@
+language: java
+sudo: false
+script: mvn clean verify
+services:
+  - mysql
+before_install:
+  - chmod +x mvnw
+  - mysql -e 'CREATE DATABASE prototype;'
