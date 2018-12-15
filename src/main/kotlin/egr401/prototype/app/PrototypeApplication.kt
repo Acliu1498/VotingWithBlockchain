@@ -1,4 +1,4 @@
-package egr401.prototype
+package egr401.prototype.app
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
