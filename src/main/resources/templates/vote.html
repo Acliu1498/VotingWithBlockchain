@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <!--<link rel="stylesheet" th:href="@{/css/styles.css}"/>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <title>Vote</title>
+    <div class="top">
+        <img src="https://gorillamarketing.net/wp-content/uploads/2018/02/CBU-logo.png" width="200px" style="margin-bottom:2%"/><br/>
+        <button type="button" class="btn btn-success btn-lg" style="margin-top: 1%">Vote Now!</button>
+
+    </div>
+</head>
+
+<body>
+    <form action="#" th:action="@{/VoteSubmission}" method="post">
+        <div class="row">
+            <div class="column">
+                <h3>{Candidate's Name}</h3>
+                <img src="https://gaia.adage.com/images/bin/image/1219_C50_JamesCorden_img20161216.jpg" height="250px"
+                     onmouseover="document.getElementById('div1').style.display = 'block';"
+                     onmouseout="document.getElementById('div1').style.display = 'none';"/>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                    <label class="form-check-label" for="inlineRadio1">1</label>
+                </div>
+            </div>
+            <div class="column">
+                <h3>{Candidate's Name}</h3>
+                <img src="https://gaia.adage.com/images/bin/image/1219_C50_JamesCorden_img20161216.jpg" height="250px"
+                     onmouseover="document.getElementById('div1').style.display = 'block';"
+                     onmouseout="document.getElementById('div1').style.display = 'none';"/>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                    <label class="form-check-label" for="inlineRadio2">2</label>
+                </div>
+            </div>
+            <div class="column">
+                <h3>{Candidate's Name}</h3>
+                <img src="https://gaia.adage.com/images/bin/image/1219_C50_JamesCorden_img20161216.jpg" height="250px"
+                     onmouseover="document.getElementById('div1').style.display = 'block';"
+                     onmouseout="document.getElementById('div1').style.display = 'none';"/>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                    <label class="form-check-label" for="inlineRadio3">3</label>
+                </div>
+            </div>
+            <div class="column">
+                <h3>{Candidate's Name}</h3>
+                <img src="https://gaia.adage.com/images/bin/image/1219_C50_JamesCorden_img20161216.jpg" height="250px"
+                     onmouseover="document.getElementById('div1').style.display = 'block';"
+                     onmouseout="document.getElementById('div1').style.display = 'none';"/>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+                    <label class="form-check-label" for="inlineRadio4">4</label>
+                </div>
+            </div>
+        </div>
+    </form>
+        <div class="elections">
+            <div id="div1" style="display: none; font-size: 18px; font-family: 'Chalkboard';
+                 position:absolute; top: 550px; text-align:center;" >
+                <div class="row">
+                     <div class="col-sm-12" style="color: #232c68; text-align: center; padding-left: 50px; padding-right: 50px;">
+                         It is a long established fact that
+                        a reader will be distracted by the readable content of a page when looking at its layout.
+                        The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,
+                        as opposed to using 'Content here, content here', making it look like readable English.
+                        Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text,
+                        and a search for 'lorem ipsum' will uncover many web sites still in their infancy.
+                        Various versions have evolved over the years, sometimes by accident, sometimes on purpose
+                        (injected humour and the like).
+                     </div>
+                </div>
+            </div>
+        </div>
+
+
+</body>
+
+<style>
+    .top{
+        margin-top:1%;
+    }
+    h3 {
+        color: #232c68;
+        margin-top: -5px;
+    }
+    h2 {
+        /*#ca9801*/
+        color: #232c68;
+    }
+    body {
+        text-align: center;
+    }
+    * {
+        box-sizing: border-box;
+    }
+    .column {
+        float: left;
+        width: 25%;
+        padding: 20px;
+        height: 350px;
+        background-color: #ca9801;
+    }
+    .row {
+        margin-top:2%;
+    }
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+</style>
+
+</html>
