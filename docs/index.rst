@@ -14,13 +14,15 @@
 Welcome to VWB API's documentation!
 ===================================
 
-VWB provides one RESTful API that allows for ease-of-use vote management.
-
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   overview
-   resources
 
 
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
