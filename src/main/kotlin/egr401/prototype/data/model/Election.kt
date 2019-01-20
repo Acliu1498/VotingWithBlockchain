@@ -1,10 +1,6 @@
 package egr401.prototype.data.model
 
-import com.fasterxml.jackson.annotation.JsonFormat
-import org.springframework.format.annotation.DateTimeFormat
-import org.springframework.transaction.annotation.Transactional
 import java.util.*
-import javax.annotation.Generated
 import javax.persistence.*
 
 @Entity
