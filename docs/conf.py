@@ -26,11 +26,7 @@ author = 'Brandon Aldridge, Alexander Liu, Trevor Ragland, Gabriel Veloz'
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-<<<<<<< HEAD
 release = '0.10'
-=======
-release = '0.1'
->>>>>>> Created election class, DAO, and Controller for the election objects of the application
 
 
 # -- General configuration ---------------------------------------------------
@@ -45,10 +41,7 @@ release = '0.1'
 extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.coverage',
-<<<<<<< HEAD
     'sphinx.ext.viewcode',
-=======
->>>>>>> Created election class, DAO, and Controller for the election objects of the application
     'sphinx.ext.githubpages',
 ]
 
@@ -85,7 +78,7 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"
+html_theme = 'alabaster'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
