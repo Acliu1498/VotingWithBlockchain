@@ -1,14 +1,16 @@
 package egr401.prototype.impl.api.controllers
 
 import egr401.prototype.data.model.Election
-import egr401.prototype.impl.persistence.daos.ElectionDao
+
+import egr401.prototype.impl.persistence.daos.ElectionDAO
 import egr401.prototype.inter.persistence.daos.Dao
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
-
 import java.lang.Exception
-import java.sql.Date
-import java.time.LocalDate
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
@@ -22,7 +24,7 @@ class ElectionController @Autowired constructor(private val electionDAO: Dao<Ele
 
         }
         when (electionDAO) {
-            is ElectionDao -> return election
+            is ElectionDAO -> return election
             else -> throw IllegalArgumentException("Incorrect dao")
         }
     }
@@ -53,4 +55,16 @@ class ElectionController @Autowired constructor(private val electionDAO: Dao<Ele
     }
 
 
+=======
+//@RequestMapping("/electionController")
+class ElectionController {
+
+    val date1 = Date.valueOf(LocalDate.now())
+    val date2 = Date.valueOf(LocalDate.of(2019,1,25))
+
+    @RequestMapping(value = "/electionController/{name}", method = arrayOf(RequestMethod.GET))
+    fun getElection(@PathVariable name:String): Election{
+        return Election(1, name , date1,date2)
+    }
+>>>>>>> Created election class, DAO, and Controller for the election objects of the application
 }
