@@ -5,11 +5,13 @@ import egr401.prototype.impl.persistence.daos.ElectionDAO
 import egr401.prototype.inter.persistence.daos.Dao
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+
 import java.lang.Exception
 
 
 
 @RestController
+//@RequestMapping("/electionController")
 class ElectionController @Autowired constructor(private val electionDAO: Dao<Election>) {
 
     @RequestMapping(value = "/electionController/addElection", method = arrayOf(RequestMethod.POST))
@@ -49,4 +51,16 @@ class ElectionController @Autowired constructor(private val electionDAO: Dao<Ele
             else -> throw IllegalArgumentException("Incorrect dao used for Election Use case")
         }
     }
+
+    @RequestMapping(value = "/electionController/getPastElections", method = arrayOf(RequestMethod.GET))
+    fun getFinishedElections(): List<Election>{
+        // checks that the dao is an election dao
+        when (electionDAO){
+            // returns the current elections
+            is ElectionDAO-> return electionDAO.getPastElections()
+            else -> throw IllegalArgumentException("Incorrect dao used for Election Use case")
+        }
+    }
+
+
 }
