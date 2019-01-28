@@ -1,7 +1,7 @@
 package egr401.prototype.impl.api.controllers
 
 import egr401.prototype.data.model.Election
-import egr401.prototype.impl.persistence.daos.ElectionDAO
+import egr401.prototype.impl.persistence.daos.ElectionDao
 import egr401.prototype.inter.persistence.daos.Dao
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -22,7 +22,7 @@ class ElectionController @Autowired constructor(private val electionDAO: Dao<Ele
 
         }
         when (electionDAO) {
-            is ElectionDAO -> return electionDAO.getCurrentElections().last()
+            is ElectionDao -> return electionDAO.getCurrentElections().last()
             else -> throw IllegalArgumentException("Incorrect dao")
         }
     }
@@ -37,7 +37,7 @@ class ElectionController @Autowired constructor(private val electionDAO: Dao<Ele
         // checks that the dao is an election dao
         when (electionDAO) {
             // returns the current elections
-            is ElectionDAO -> return electionDAO.getCurrentElections()
+            is ElectionDao -> return electionDAO.getCurrentElections()
             else -> throw IllegalArgumentException("Incorrect dao used for Election Use case")
         }
     }
@@ -47,7 +47,7 @@ class ElectionController @Autowired constructor(private val electionDAO: Dao<Ele
         // checks that the dao is an election dao
         when (electionDAO) {
             // returns the current elections
-            is ElectionDAO -> return electionDAO.getPastElections()
+            is ElectionDao -> return electionDAO.getPastElections()
             else -> throw IllegalArgumentException("Incorrect dao used for Election Use case")
         }
     }
@@ -57,7 +57,7 @@ class ElectionController @Autowired constructor(private val electionDAO: Dao<Ele
         // checks that the dao is an election dao
         when (electionDAO){
             // returns the current elections
-            is ElectionDAO-> return electionDAO.getPastElections()
+            is ElectionDao-> return electionDAO.getPastElections()
             else -> throw IllegalArgumentException("Incorrect dao used for Election Use case")
         }
     }

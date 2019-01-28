@@ -7,9 +7,9 @@ import java.time.LocalDate
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 
-@Repository
-class ElectionDAO: Dao<Election> {
 
+@Repository
+class ElectionDao: Dao<Election> {
     @PersistenceContext
     private lateinit var entityManager: EntityManager
 
@@ -36,6 +36,4 @@ class ElectionDAO: Dao<Election> {
     fun getPastElections(): List<Election>{
         return entityManager.createNativeQuery("SELECT * WHERE endDate <= " + LocalDate.now()).resultList as List<Election>
     }
-
-
 }
