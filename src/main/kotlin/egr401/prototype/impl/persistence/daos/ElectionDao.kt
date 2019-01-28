@@ -2,8 +2,10 @@ package egr401.prototype.impl.persistence.daos
 
 import egr401.prototype.data.model.Election
 import egr401.prototype.inter.persistence.daos.Dao
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.stereotype.Repository
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 
@@ -29,10 +31,15 @@ class ElectionDao: Dao<Election> {
     }
 
     fun getCurrentElections(): List<Election>{
-        return entityManager.createNativeQuery("SELECT * WHERE endDate > " + LocalDate.now()).resultList as List<Election>
+        return entityManager
+            .createQuery("SELECT e FROM Election e WHERE e.endDate > " + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE))
+            .resultList as List<Election>
+
     }
 
     fun getPastElections(): List<Election>{
-        return entityManager.createNativeQuery("SELECT * WHERE endDate <= " + LocalDate.now()).resultList as List<Election>
+        return entityManager
+            .createQuery("SELECT e FROM Election e WHERE e.endDate <= " + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE))
+            .resultList as List<Election>
     }
 }

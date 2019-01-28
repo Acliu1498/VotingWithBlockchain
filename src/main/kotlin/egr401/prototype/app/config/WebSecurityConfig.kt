@@ -2,6 +2,7 @@ package egr401.prototype.app.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -17,6 +18,8 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http
                 .authorizeRequests()
+            .antMatchers(HttpMethod.GET, "/electionController/**").permitAll().and()
+            .authorizeRequests()
                 .antMatchers("/", "/home").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -26,6 +29,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .and()
                 .logout()
                 .permitAll()
+
     }
 
     @Bean
@@ -38,4 +42,5 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
         return InMemoryUserDetailsManager(user)
     }
+
 }

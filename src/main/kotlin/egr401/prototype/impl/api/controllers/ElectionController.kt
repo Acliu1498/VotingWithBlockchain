@@ -12,10 +12,9 @@ import java.time.LocalDate
 
 
 @RestController
-//@RequestMapping("/electionController")
 class ElectionController @Autowired constructor(private val electionDAO: Dao<Election>) {
 
-    @RequestMapping(value= "/electionControlle/addElection", method = arrayOf(RequestMethod.POST))
+    @RequestMapping(value= "/electionController/addElection", method = arrayOf(RequestMethod.POST))
     fun addElection(@RequestBody election: Election): Election{
         try {
             electionDAO.insert(election)
