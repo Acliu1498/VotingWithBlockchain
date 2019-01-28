@@ -15,9 +15,6 @@ import java.time.LocalDate
 //@RequestMapping("/electionController")
 class ElectionController @Autowired constructor(private val electionDAO: Dao<Election>) {
 
-    val date1 = Date.valueOf(LocalDate.now())
-    val date2 = Date.valueOf(LocalDate.of(2019,1,25))
-
     @RequestMapping(value= "/electionControlle/addElection", method = arrayOf(RequestMethod.POST))
     fun addElection(@RequestBody election: Election): Election{
         try {

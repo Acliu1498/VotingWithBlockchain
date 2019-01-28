@@ -7,7 +7,6 @@ import java.time.LocalDate
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 
-
 @Repository
 class ElectionDao: Dao<Election> {
     @PersistenceContext

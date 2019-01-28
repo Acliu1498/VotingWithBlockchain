@@ -18,7 +18,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 @SpringBootTest(classes = arrayOf(PrototypeApplication::class))
 class ElectionControllerTest {
 
-
     @Autowired
     lateinit var electionDao: ElectionDao
 
