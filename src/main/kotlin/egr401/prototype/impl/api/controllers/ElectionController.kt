@@ -27,7 +27,10 @@ class ElectionController @Autowired constructor(private val electionDAO: Dao<Ele
         }catch (e: Exception){
 
         }
-        return election
+        when (electionDAO) {
+            is ElectionDAO -> return electionDAO.getCurrentElections().last()
+            else -> throw IllegalArgumentException("Incorrect dao")
+        }
     }
 
     @RequestMapping(value = "/electionController/{name}", method = arrayOf(RequestMethod.GET))
