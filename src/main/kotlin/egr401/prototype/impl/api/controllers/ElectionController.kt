@@ -22,7 +22,7 @@ class ElectionController @Autowired constructor(private val electionDAO: Dao<Ele
 
         }
         when (electionDAO) {
-            is ElectionDAO -> return election
+            is ElectionDAO -> return electionDAO.getCurrentElections().last()
             else -> throw IllegalArgumentException("Incorrect dao")
         }
     }
