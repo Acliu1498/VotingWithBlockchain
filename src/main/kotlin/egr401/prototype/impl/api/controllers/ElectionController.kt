@@ -11,7 +11,6 @@ import java.lang.Exception
 
 
 @RestController
-//@RequestMapping("/electionController")
 class ElectionController @Autowired constructor(private val electionDAO: Dao<Election>) {
 
     @RequestMapping(value = "/electionController/addElection", method = arrayOf(RequestMethod.POST))

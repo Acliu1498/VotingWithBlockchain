@@ -1,5 +1,6 @@
 package egr401.prototype.data.model
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.util.*
 import javax.persistence.*
 
