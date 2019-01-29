@@ -1,4 +1,0 @@
-CREATE TABLE greeting(
-  id INTEGER PRIMARY KEY,
-  message VARCHAR (255)
-);
