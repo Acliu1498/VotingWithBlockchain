@@ -1,6 +1,7 @@
 package egr401.prototype.data.model
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import javax.annotation.Generated
@@ -14,9 +15,10 @@ data class Election(
         @GeneratedValue(strategy = GenerationType.AUTO)
         val id: Int,
         val name: String,
-        @JsonFormat(pattern="yyyyMMdd")
+
+        @Temporal(TemporalType.DATE)
         val startDate: Date,
-        @JsonFormat(pattern="yyyyMMdd")
+        @Temporal(TemporalType.DATE)
         val endDate: Date
 
 )

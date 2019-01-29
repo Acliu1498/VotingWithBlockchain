@@ -27,7 +27,7 @@ class ElectionController @Autowired constructor(private val electionDAO: Dao<Ele
         }
     }
 
-    @RequestMapping(value = "/electionController/{id}", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = "/electionController/getById/{id}", method = arrayOf(RequestMethod.GET))
     fun getElection(@PathVariable id: Int): Election{
         return electionDAO.getById(id)
     }

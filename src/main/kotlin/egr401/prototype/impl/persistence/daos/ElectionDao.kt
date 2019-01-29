@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
@@ -34,14 +35,14 @@ class ElectionDao: Dao<Election> {
 
     fun getCurrentElections(): List<Election>{
         return entityManager
-            .createQuery("SELECT e FROM Election e WHERE e.endDate > " + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE))
+            .createQuery("SELECT e FROM Election e WHERE e.endDate > \'${LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE)}\'")
             .resultList as List<Election>
 
     }
 
     fun getPastElections(): List<Election>{
         return entityManager
-            .createQuery("SELECT e FROM Election e WHERE e.endDate <= " + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE))
+            .createQuery("SELECT e FROM Election e WHERE e.endDate <= \'${LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE)}\'")
             .resultList as List<Election>
     }
 }
