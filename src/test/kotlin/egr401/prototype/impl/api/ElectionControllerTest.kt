@@ -30,7 +30,7 @@ class ElectionControllerTest {
     fun addElection_GivenValidElection_ReturnsElection() {
         Mockito.`when`(electionDao.getCurrentElections()).thenReturn(electionDataStore.currentElections)
         Mockito.`when`(electionDao.getPastElections()).thenReturn(electionDataStore.pastElections)
-        Assert.assertEquals(electionDataStore.currentElections[2], electionController.addElection(electionDataStore.currentElections[0]))
+        Assert.assertEquals(electionDataStore.currentElections[0], electionController.addElection(electionDataStore.currentElections[0]))
     }
 
     @Test
