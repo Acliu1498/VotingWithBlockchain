@@ -4,12 +4,14 @@ import egr401.prototype.data.model.Election
 import egr401.prototype.inter.persistence.daos.Dao
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.stereotype.Repository
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 
 @Repository
+@Transactional
 class ElectionDao: Dao<Election> {
     @PersistenceContext
     private lateinit var entityManager: EntityManager
