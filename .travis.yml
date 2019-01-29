@@ -3,6 +3,8 @@ sudo: false
 script: mvn clean verify
 services:
   - mysql
+notifications:
+  slack: votingwithblockchain:VnDvMRUnVTwnjwTkq3HzGWEc
 before_install:
   - chmod +x mvnw
   - mysql -e 'CREATE DATABASE prototype;'
