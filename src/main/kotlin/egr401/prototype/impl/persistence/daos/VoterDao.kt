@@ -39,24 +39,4 @@ class VoterDao : Dao<Voter> {
                 .resultList as List<Voter>
 
     }
-
-    fun getVotersByHousing(housing: Housing): List<Voter> {
-        return entityManager
-                .createQuery("SELECT e FROM Voter e WHERE e.housing.text ==" + housing)
-                .resultList as List<Voter>
-    }
-
-    fun getVotersByYear(year: Year): List<Voter> {
-        return entityManager
-                .createQuery("select e from Voter where e.year.text ==" + year)
-                .resultList as List<Voter>
-    }
-
-    fun getVotersByResidency(residency: Residency): List<Voter> {
-        return entityManager
-                .createQuery("select e from Voter where e.residency.text ==" + residency)
-                .resultList as List<Voter>
-    }
-
-
 }

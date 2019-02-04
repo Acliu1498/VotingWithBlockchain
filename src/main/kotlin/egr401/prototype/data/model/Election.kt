@@ -15,6 +15,10 @@ data class Election(
         @JsonFormat(pattern="yyyyMMdd")
         val startDate: Date,
         @JsonFormat(pattern="yyyyMMdd")
-        val endDate: Date
+        val endDate: Date,
+        @OneToMany(mappedBy = "elections")
+        val voters: List<Voter>,
+        @OneToMany(mappedBy = "elections")
+        val candidate: List<Candidate>
 
 )

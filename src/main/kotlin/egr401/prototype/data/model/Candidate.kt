@@ -8,13 +8,14 @@ data class Candidate(
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        override val id: Int,
-        override val studentId: Int,
-        override val email: String,
-        override val lastName: String,
-        override val firstName: String,
-        val officePosition: String,
-        val votes: Int
-) : User(id, studentId, email, lastName, firstName) {
+        val id: Int,
+        val studentId: Int,
+        val email: String,
+        val lastName: String,
+        val firstName: String,
 
-}
+        @ManyToOne
+        @JoinColumn
+        val elections: Election
+
+)
