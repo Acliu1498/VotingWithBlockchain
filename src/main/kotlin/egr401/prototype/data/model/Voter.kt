@@ -13,17 +13,14 @@ data class Voter(
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        override val id: Int,
-        override val studentId: Int,
-        override val email: String,
-        override val lastName: String,
-        override val firstName: String,
-        val housing: Housing,
-        val year: Year,
-        val residency: Residency,
-        @JsonFormat(pattern = "yyyy")
-        val yearEnrolled: Date
-) : User(id, studentId, email, lastName, firstName) {
+        val id: Int,
+        val studentId: Int,
+
+        @ManyToOne
+        @JoinColumn
+        val elections: Election
+
+){
 
 
 }

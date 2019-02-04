@@ -30,28 +30,4 @@ class VoterController @Autowired constructor(private val voterDao: VoterDao) {
         return voterDao.getById(id)
     }
 
-    @RequestMapping(value = "/voterController/getByHousing", method = arrayOf(RequestMethod.GET))
-    fun getVotersByHousing(@PathVariable housing: Housing): List<Voter> {
-        when (voterDao) {
-            is VoterDao -> return voterDao.getVotersByHousing(housing)
-            else -> throw IllegalArgumentException("Incorrect dao used for Voter use case")
-        }
-    }
-
-    @RequestMapping(value = "/voterController/getByYear", method = arrayOf(RequestMethod.GET))
-    fun getVotersByYear(@PathVariable year: Year): List<Voter> {
-        when (voterDao) {
-            is VoterDao -> return voterDao.getVotersByYear(year)
-            else -> throw IllegalArgumentException("Incorrect dao used for Voter use case")
-        }
-    }
-
-    @RequestMapping(value = "/voterController/getByResidency", method = arrayOf(RequestMethod.GET))
-    fun getVotersByResidency(@PathVariable residency: Residency): List<Voter> {
-        when (voterDao) {
-            is VoterDao -> return voterDao.getVotersByResidency(residency)
-            else -> throw IllegalArgumentException("Incorrect dao used for Voter use case")
-        }
-    }
-
 }
