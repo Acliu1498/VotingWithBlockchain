@@ -8,11 +8,8 @@ import org.springframework.web.bind.annotation.*
 
 import java.lang.Exception
 
-
-
 @RestController
 class ElectionController @Autowired constructor(private val electionDAO: Dao<Election>) {
-
     @RequestMapping(value = "/electionController/addElection", method = arrayOf(RequestMethod.POST))
     fun addElection(@RequestBody election: Election): Election {
         try {
@@ -21,7 +18,7 @@ class ElectionController @Autowired constructor(private val electionDAO: Dao<Ele
 
         }
         when (electionDAO) {
-            is ElectionDao -> return electionDAO.getCurrentElections().last()
+            is ElectionDao -> return election
             else -> throw IllegalArgumentException("Incorrect dao")
         }
     }
@@ -50,18 +47,4 @@ class ElectionController @Autowired constructor(private val electionDAO: Dao<Ele
             else -> throw IllegalArgumentException("Incorrect dao used for Election Use case")
         }
     }
-
-    @RequestMapping(value = "/electionController/getPastElections", method = arrayOf(RequestMethod.GET))
-    fun getFinishedElections(): List<Election>{
-        // checks that the dao is an election dao
-        when (electionDAO){
-            // returns the current elections
-            is ElectionDao-> return electionDAO.getPastElections()
-            else -> throw IllegalArgumentException("Incorrect dao used for Election Use case")
-        }
-    }
-
-
-
-
 }
