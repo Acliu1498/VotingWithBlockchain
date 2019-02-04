@@ -16,10 +16,7 @@ data class Election(
         @Temporal(TemporalType.DATE)
         val startDate: Date,
         @JsonFormat(pattern="yyyyMMdd")
-        val endDate: Date,
-        @OneToMany(mappedBy = "elections")
-        val voters: List<Voter>,
-        @OneToMany(mappedBy = "elections")
-        val candidate: List<Candidate>
+        val endDate: Date
+
 
 )

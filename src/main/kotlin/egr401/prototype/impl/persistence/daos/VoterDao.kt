@@ -1,5 +1,6 @@
 package egr401.prototype.impl.persistence.daos
 
+import egr401.prototype.data.model.Election
 import egr401.prototype.data.model.Voter
 import egr401.prototype.data.model.model.enums.Housing
 import egr401.prototype.data.model.model.enums.Residency
@@ -8,9 +9,11 @@ import egr401.prototype.inter.persistence.daos.Dao
 import org.springframework.stereotype.Repository
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
+import javax.transaction.Transactional
 
 
 @Repository
+@Transactional
 class VoterDao : Dao<Voter> {
 
 
@@ -33,10 +36,11 @@ class VoterDao : Dao<Voter> {
         entityManager.remove(obj)
     }
 
-    fun getVoters(): List<Voter> {
+    fun getElectionsByStudentId(id: Int): List<Election> {
         return entityManager
-                .createQuery("select e from Voter e where e.id >" + "0")
-                .resultList as List<Voter>
+                .createQuery("select e from Election e where e.id == $id")
+                .resultList as List<Election>
 
     }
+
 }

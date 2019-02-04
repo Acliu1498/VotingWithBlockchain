@@ -7,15 +7,15 @@ import javax.persistence.*
 data class Candidate(
 
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Int,
         val studentId: Int,
         val email: String,
         val lastName: String,
         val firstName: String,
 
-        @ManyToOne
-        @JoinColumn
-        val elections: Election
+        @ManyToMany
+        @JoinTable(name = "candidate_election",
+                joinColumns = arrayOf(JoinColumn(name = "candidate_id", referencedColumnName = "studentId")),
+                inverseJoinColumns = arrayOf(JoinColumn(name = "election_id", referencedColumnName = "id")))
+        val elections: MutableList<Election>
 
 )

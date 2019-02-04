@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat
 import egr401.prototype.data.model.model.enums.Housing
 import egr401.prototype.data.model.model.enums.Residency
 import egr401.prototype.data.model.model.enums.Year
+import org.jetbrains.annotations.NotNull
 import java.util.*
 import javax.persistence.*
 
@@ -17,10 +18,7 @@ data class Voter(
         val studentId: Int,
 
         @ManyToOne
-        @JoinColumn
-        val elections: Election
+        @JoinColumn(name="election_id")
+        val election: Election
 
-){
-
-
-}
+)
