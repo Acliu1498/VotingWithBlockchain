@@ -10,13 +10,14 @@ import egr401.prototype.inter.persistence.daos.Dao
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.lang.IllegalArgumentException
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @RestController
 class ElectionController @Autowired constructor(
         private val electionDAO: Dao<Election>,
         private val candidateDao: Dao<Candidate>
 ) {
-    private val votes: MutableList<Vote> = mutableListOf()
 
     @RequestMapping(value = "/electionController/addElection", method = arrayOf(RequestMethod.POST))
     fun addElection(@RequestBody election: Election): Election {
@@ -71,13 +72,22 @@ class ElectionController @Autowired constructor(
 
     @RequestMapping(value = "/electionController/postResults/{id}", method = arrayOf(RequestMethod.POST))
     fun postResults(@PathVariable id: Int, @RequestBody candidateResults: Map<Int, Int>){
-        var election = electionDAO.getById(id)
+        val election = electionDAO.getById(id)
+        // if it is the day the election ends, add date
+        if(election.endDate.equals(LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE))) {
+            // for each candidate add votes
+            for (candidatePair in candidateResults) {
+                val candidate = candidateDao.getById(candidatePair.key)
+                (candidateDao as CandidateDao).addVotesForCandidate(candidate, election, candidatePair.value)
+            }
+        } else {
+            throw IllegalArgumentException("Past date")
+        }
     }
 
     @RequestMapping(value = "electionController/getVotes", method = arrayOf(RequestMethod.GET))
     fun getVotes(): List<Vote>{
         return (electionDAO as ElectionDao).getAllVotes()
-
     }
 
 }

@@ -1,9 +1,6 @@
 package egr401.prototype.impl.persistence.daos
 
-import egr401.prototype.data.model.Candidate
-import egr401.prototype.data.model.Election
-import egr401.prototype.data.model.Vote
-import egr401.prototype.data.model.Voter
+import egr401.prototype.data.model.*
 import egr401.prototype.inter.persistence.daos.Dao
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -51,6 +48,7 @@ class ElectionDao: Dao<Election> {
     }
 
     fun getCurrentElections(): List<Election>{
+        // queries database for elections that have not yet past their end dates
         return entityManager
             .createQuery("SELECT e FROM Election e WHERE e.endDate > " + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE))
             .resultList as List<Election>
@@ -58,24 +56,31 @@ class ElectionDao: Dao<Election> {
     }
 
     fun getPastElections(): List<Election>{
+        // queries database for elections that have past their end date
         return entityManager
             .createQuery("SELECT e FROM Election e WHERE e.endDate <= " + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE))
             .resultList as List<Election>
     }
 
     fun getCandidatesForElection(id: Int): List<Candidate> {
-        return entityManager
-                .createQuery("select e from Candidate e join e.election_id elec where elec = :id ")
-                .setParameter("id", id)
-                .resultList as List<Candidate>
+        // queries database for candidates who are associate to specified candidate
+        val candidates = mutableListOf<Candidate>()
 
+            (entityManager
+            .createQuery("SELECT ce FROM CandidateElection ce WHERE ce.election.id = :eId")
+            .setParameter("eId", id)
+            .resultList as List<CandidateElection>).forEach {
+                candidates.add(it.candidate)
+            }
+
+        return candidates
 
     }
 
-
     fun getVotersForElection(id: Int): List<Voter> {
+        // queries database for voters who are associated with the given election
         return entityManager
-                .createQuery("select e from Voter e where e.election_id = :id")
+                .createQuery("select v from Voter v where v.election.id = :id")
                 .setParameter("id", id)
                 .resultList as List<Voter>
 

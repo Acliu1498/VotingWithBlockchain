@@ -22,6 +22,7 @@ class CandidateDao : Dao<Candidate> {
 
     override fun getById(id: Int): Candidate {
         val candidate =  entityManager.find(Candidate::class.java, id)
+        // if the candidate does not exist throw an error
         if(candidate == null){
             throw IllegalArgumentException("Candidate with id: $id does not exist")
         } else {
@@ -43,11 +44,17 @@ class CandidateDao : Dao<Candidate> {
     }
 
     fun isCandidateElection(candidateId: Int, electionId: Int): Boolean{
+        // returns if the candidate is a part of the election
         return !entityManager
             .createQuery("SELECT ce FROM CandidateElection ce WHERE ce.candidate.id = :cId AND ce.election.id = :eId")
             .setParameter("cId", candidateId)
             .setParameter("eId", electionId)
             .resultList.isEmpty()
+    }
+
+    fun addVotesForCandidate(candidate: Candidate, election: Election, votes: Int){
+        val newCandidateElection = CandidateElection(candidate, election, votes)
+        entityManager.merge(newCandidateElection)
     }
 
 
