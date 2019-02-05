@@ -5,6 +5,7 @@ import egr401.prototype.data.model.model.enums.Housing
 import egr401.prototype.data.model.model.enums.Residency
 import egr401.prototype.data.model.model.enums.Year
 import org.jetbrains.annotations.NotNull
+import java.io.Serializable
 import java.util.*
 import javax.persistence.*
 
@@ -13,12 +14,13 @@ import javax.persistence.*
 data class Voter(
 
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Int,
-        val studentId: Int,
+        val voterId: Int,
+        var hasVoted: Boolean = false,
 
+        @Id
         @ManyToOne
+        @NotNull
         @JoinColumn(name="election_id")
         val election: Election
 
-)
+): Serializable

@@ -15,7 +15,7 @@ data class Election(
 
         @Temporal(TemporalType.DATE)
         val startDate: Date,
-        @JsonFormat(pattern="yyyyMMdd")
+        @Temporal(TemporalType.DATE)
         val endDate: Date
 
 

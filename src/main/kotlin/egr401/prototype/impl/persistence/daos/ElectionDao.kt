@@ -2,6 +2,7 @@ package egr401.prototype.impl.persistence.daos
 
 import egr401.prototype.data.model.Candidate
 import egr401.prototype.data.model.Election
+import egr401.prototype.data.model.Vote
 import egr401.prototype.data.model.Voter
 import egr401.prototype.inter.persistence.daos.Dao
 import org.springframework.stereotype.Repository
@@ -22,7 +23,12 @@ class ElectionDao: Dao<Election> {
     }
 
     override fun getById(id: Int): Election {
-        return entityManager.find(Election::class.java, id)
+        val election = entityManager.find(Election::class.java, id)
+        if(election == null){
+            throw IllegalArgumentException("Election with id: $id does not exist")
+        } else {
+            return election
+        }
     }
 
     override fun update(obj: Election): Election {
@@ -31,6 +37,17 @@ class ElectionDao: Dao<Election> {
 
     override fun delete(obj: Election){
         entityManager.remove(obj)
+    }
+
+
+
+    fun getAllVotes(): List<Vote> {
+        val votes = entityManager.createQuery("SELECT v FROM Vote v").resultList as List<Vote>
+        for (vote in votes){
+            entityManager.remove(vote)
+        }
+
+        return votes
     }
 
     fun getCurrentElections(): List<Election>{
@@ -48,7 +65,7 @@ class ElectionDao: Dao<Election> {
 
     fun getCandidatesForElection(id: Int): List<Candidate> {
         return entityManager
-                .createQuery("select e from Candidate e join e.elections elec where elec.id = :id ")
+                .createQuery("select e from Candidate e join e.election_id elec where elec = :id ")
                 .setParameter("id", id)
                 .resultList as List<Candidate>
 
@@ -63,4 +80,6 @@ class ElectionDao: Dao<Election> {
                 .resultList as List<Voter>
 
     }
+
+
 }
