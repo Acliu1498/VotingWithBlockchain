@@ -1,10 +1,7 @@
 package egr401.prototype.data.model
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import org.springframework.format.annotation.DateTimeFormat
-import org.springframework.transaction.annotation.Transactional
 import java.util.*
-import javax.annotation.Generated
 import javax.persistence.*
 
 @Entity
@@ -19,6 +16,6 @@ data class Election(
         @Temporal(TemporalType.DATE)
         val startDate: Date,
         @Temporal(TemporalType.DATE)
-        val endDate: Date
-
+        val endDate: Date,
+        val finished: Boolean = false
 )

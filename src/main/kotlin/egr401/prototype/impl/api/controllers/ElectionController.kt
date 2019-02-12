@@ -1,56 +1,96 @@
 package egr401.prototype.impl.api.controllers
 
-import egr401.prototype.data.model.Election
+import egr401.prototype.data.model.*
+import egr401.prototype.impl.persistence.daos.CandidateDao
 import egr401.prototype.impl.persistence.daos.ElectionDao
 import egr401.prototype.inter.persistence.daos.Dao
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
-
-import java.lang.Exception
-import java.sql.Date
+import java.lang.IllegalArgumentException
 import java.time.LocalDate
-
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 @RestController
-class ElectionController @Autowired constructor(private val electionDAO: Dao<Election>) {
+class ElectionController @Autowired constructor(
+        private val electionDAO: Dao<Election>,
+        private val candidateDao: Dao<Candidate>
+) {
 
-    @RequestMapping(value= "/electionController/addElection", method = arrayOf(RequestMethod.POST))
-    fun addElection(@RequestBody election: Election): Election{
-        try {
-            electionDAO.insert(election)
-        }catch (e: Exception){
+    @RequestMapping(value = "/electionController/addElection", method = arrayOf(RequestMethod.POST))
+    fun addElection(@RequestBody election: Election): Election {
+        electionDAO.insert(election)
+        return election
 
-        }
-        when (electionDAO) {
-            is ElectionDao -> return election
-            else -> throw IllegalArgumentException("Incorrect dao")
-        }
     }
 
     @RequestMapping(value = "/electionController/getById/{id}", method = arrayOf(RequestMethod.GET))
-    fun getElection(@PathVariable id: Int): Election{
+    fun getElection(@PathVariable id: Int): Election {
         return electionDAO.getById(id)
     }
 
     @RequestMapping(value = "/electionController/getCurrentElections", method = arrayOf(RequestMethod.GET))
-    fun getCurrentElections(): List<Election>{
-        // checks that the dao is an election dao
-        when (electionDAO){
-            // returns the current elections
-            is ElectionDao -> return electionDAO.getCurrentElections()
-            else -> throw IllegalArgumentException("Incorrect dao used for Election Use case")
-        }
+    fun getCurrentElections(): List<Election> {
+         return (electionDAO as ElectionDao).getCurrentElections()
     }
 
     @RequestMapping(value = "/electionController/getPastElections", method = arrayOf(RequestMethod.GET))
-    fun getPastElections(): List<Election>{
-        // checks that the dao is an election dao
-        when (electionDAO){
-            // returns the current elections
-            is ElectionDao-> return electionDAO.getPastElections()
-            else -> throw IllegalArgumentException("Incorrect dao used for Election Use case")
+    fun getPastElections(): List<Election> {
+        return (electionDAO as ElectionDao).getPastElections()
+    }
+
+    @RequestMapping(value = "/electionController/getCandidatesForElection/{id}", method = arrayOf(RequestMethod.GET))
+    fun getCandidatesForElection(@PathVariable id: Int): List<Candidate> {
+        return (electionDAO as ElectionDao).getCandidatesForElection(id)
+    }
+
+
+    @RequestMapping(value = "/electionController/getVotersForElection/{id}", method = arrayOf(RequestMethod.GET))
+    fun getVotersForElection(@PathVariable id: Int): List<Voter>{
+        return (electionDAO as ElectionDao).getVotersForElection(id)
+    }
+
+    @RequestMapping(value = "/electionController/addCandidate/{electionId}", method = arrayOf(RequestMethod.POST))
+    fun addCandidate(@PathVariable electionId: Int, @RequestBody candidate: Candidate): Candidate {
+        val election = electionDAO.getById(electionId)
+        try {
+            candidateDao.getById(candidate.id)
+        } catch (e: Exception){
+            candidateDao.insert(candidate)
+        }
+        (candidateDao as CandidateDao).addCandidateToElection(candidate, election)
+
+        return candidate
+    }
+
+    @RequestMapping(value = "/electionController/getCandidate/{id}", method = arrayOf(RequestMethod.GET))
+    fun getCandidate(@PathVariable id: Int): Candidate {
+        return candidateDao.getById(id)
+    }
+
+    @RequestMapping(value = "/electionController/postResults/{id}", method = arrayOf(RequestMethod.POST))
+    fun postResults(@PathVariable id: Int, @RequestBody candidateResults: List<Result>){
+        val election = electionDAO.getById(id)
+        // if it is the day the election ends, add dates
+        if(election.endDate.after(java.sql.Date.valueOf(LocalDate.now()))) {
+            if (!election.finished) {
+                for (candidatePair in candidateResults) {
+                    val candidate = candidateDao.getById(candidatePair.candidateId)
+                    (candidateDao as CandidateDao).addVotesForCandidate(candidate, election, candidatePair.votes)
+                }
+                electionDAO.update(Election(election.id, election.name, election.startDate, election.endDate, true))
+            } else {
+                throw IllegalArgumentException("Election has already been completed.")
+            }
+        } else {
+            throw IllegalArgumentException("Election has not finished yet.")
         }
     }
 
+    @RequestMapping(value = "electionController/getVotes", method = arrayOf(RequestMethod.GET))
+    fun getVotes(): List<Vote>{
+        return (electionDAO as ElectionDao).getAllVotes()
+    }
 
 }
