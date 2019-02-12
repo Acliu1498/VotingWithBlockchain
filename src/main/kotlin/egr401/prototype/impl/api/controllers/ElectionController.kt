@@ -1,9 +1,6 @@
 package egr401.prototype.impl.api.controllers
 
-import egr401.prototype.data.model.Candidate
-import egr401.prototype.data.model.Election
-import egr401.prototype.data.model.Vote
-import egr401.prototype.data.model.Voter
+import egr401.prototype.data.model.*
 import egr401.prototype.impl.persistence.daos.CandidateDao
 import egr401.prototype.impl.persistence.daos.ElectionDao
 import egr401.prototype.inter.persistence.daos.Dao
@@ -11,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.lang.IllegalArgumentException
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 @RestController
 class ElectionController @Autowired constructor(
@@ -71,17 +70,21 @@ class ElectionController @Autowired constructor(
     }
 
     @RequestMapping(value = "/electionController/postResults/{id}", method = arrayOf(RequestMethod.POST))
-    fun postResults(@PathVariable id: Int, @RequestBody candidateResults: Map<Int, Int>){
+    fun postResults(@PathVariable id: Int, @RequestBody candidateResults: List<Result>){
         val election = electionDAO.getById(id)
-        // if it is the day the election ends, add date
-        if(election.endDate.equals(LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE))) {
-            // for each candidate add votes
-            for (candidatePair in candidateResults) {
-                val candidate = candidateDao.getById(candidatePair.key)
-                (candidateDao as CandidateDao).addVotesForCandidate(candidate, election, candidatePair.value)
+        // if it is the day the election ends, add dates
+        if(election.endDate.after(java.sql.Date.valueOf(LocalDate.now()))) {
+            if (!election.finished) {
+                for (candidatePair in candidateResults) {
+                    val candidate = candidateDao.getById(candidatePair.candidateId)
+                    (candidateDao as CandidateDao).addVotesForCandidate(candidate, election, candidatePair.votes)
+                }
+                electionDAO.update(Election(election.id, election.name, election.startDate, election.endDate, true))
+            } else {
+                throw IllegalArgumentException("Election has already been completed.")
             }
         } else {
-            throw IllegalArgumentException("Past date")
+            throw IllegalArgumentException("Election has not finished yet.")
         }
     }
 

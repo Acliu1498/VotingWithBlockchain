@@ -16,7 +16,6 @@ data class Election(
         @Temporal(TemporalType.DATE)
         val startDate: Date,
         @Temporal(TemporalType.DATE)
-        val endDate: Date
-
-
+        val endDate: Date,
+        val finished: Boolean = false
 )
