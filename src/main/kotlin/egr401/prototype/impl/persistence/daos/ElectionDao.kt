@@ -86,5 +86,19 @@ class ElectionDao: Dao<Election> {
 
     }
 
+    fun getResults(id:Int): List<Result>{
+        val ces: List<CandidateElection>  = entityManager
+            .createQuery("SELECT ce from CandidateElection ce where ce.election.id = :id")
+            .setParameter("id", id)
+            .resultList as List<CandidateElection>
+        val results: MutableList<Result> = mutableListOf()
+        for (ce in ces){
+            val result: Result = Result(ce.candidate.id, ce.votes)
+            results.add(result)
+        }
+
+        return results
+    }
+
 
 }
