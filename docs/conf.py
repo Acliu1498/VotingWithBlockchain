@@ -26,7 +26,7 @@ author = 'Brandon Aldridge, Alexander Liu, Trevor Ragland, Gabriel Veloz'
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = '0.10'
 
 
 # -- General configuration ---------------------------------------------------
@@ -41,6 +41,7 @@ release = '0.1'
 extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.coverage',
+    'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
 ]
 
