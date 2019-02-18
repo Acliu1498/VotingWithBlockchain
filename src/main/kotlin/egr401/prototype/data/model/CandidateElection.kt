@@ -17,3 +17,4 @@ data class CandidateElection(
     val election: Election,
     val votes: Int = 0
 ) : Serializable
+
