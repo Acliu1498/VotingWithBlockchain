@@ -31,8 +31,7 @@ class VoterController @Autowired constructor(
 
     @RequestMapping(value = "/voterController/getElectionsForVoter/{id}", method = arrayOf(RequestMethod.GET))
     fun getElectionsForVoter(@PathVariable id: Int): List<Election>{
-        val voter = voterDao.getById(id)
-        return (voterDao as VoterDao).getElectionsByStudentId(voter.voterId)
+        return (voterDao as VoterDao).getElectionsByStudentId(id)
     }
 
     @RequestMapping(value = "/voterController/vote", method = arrayOf(RequestMethod.POST))
