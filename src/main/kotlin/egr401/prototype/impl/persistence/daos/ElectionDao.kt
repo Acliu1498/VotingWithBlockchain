@@ -79,8 +79,9 @@ class ElectionDao: Dao<Election> {
 
     fun getVotersForElection(id: Int): List<Voter> {
         // queries database for voters who are associated with the given election
+        val election: Election = getById(id)
         return entityManager
-                .createQuery("select v from Voter v where v.election.id = :id")
+                .createQuery("select v from Voter v where v.housing IN (:housings) and v.year IN (:Years)")
                 .setParameter("id", id)
                 .resultList as List<Voter>
 

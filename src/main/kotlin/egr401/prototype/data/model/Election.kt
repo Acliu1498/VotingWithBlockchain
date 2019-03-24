@@ -1,8 +1,8 @@
 package egr401.prototype.data.model
 
-import com.fasterxml.jackson.annotation.JsonFormat
+import egr401.prototype.data.model.model.enums.Housing
+import egr401.prototype.data.model.model.enums.Year
 import java.time.LocalDate
-import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -15,5 +15,7 @@ data class Election(
         val name: String,
         val startDate: LocalDate,
         val endDate: LocalDate,
-        val finished: Boolean = false
+        val finished: Boolean = false,
+        val housings: List<Housing>,
+        val year: List<Year>
 )

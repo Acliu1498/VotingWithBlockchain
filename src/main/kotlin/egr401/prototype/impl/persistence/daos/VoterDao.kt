@@ -3,9 +3,6 @@ package egr401.prototype.impl.persistence.daos
 import egr401.prototype.data.model.Election
 import egr401.prototype.data.model.Vote
 import egr401.prototype.data.model.Voter
-import egr401.prototype.data.model.model.enums.Housing
-import egr401.prototype.data.model.model.enums.Residency
-import egr401.prototype.data.model.model.enums.Year
 import egr401.prototype.inter.persistence.daos.Dao
 import org.springframework.stereotype.Repository
 import java.lang.IllegalArgumentException
@@ -23,10 +20,10 @@ class VoterDao : Dao<Voter> {
     private lateinit var entityManager: EntityManager
 
     override fun insert(obj: Voter) {
+
         entityManager.persist(obj)
     }
 
-    @Deprecated("Cannot ensure what election voter is apart of, use get voter")
     override fun getById(id: Int): Voter {
         return entityManager.find(Voter::class.java, id)
     }
@@ -40,33 +37,34 @@ class VoterDao : Dao<Voter> {
     }
 
     fun getElectionsByStudentId(id: Int): List<Election> {
-        return (entityManager
-                .createQuery("select v from Voter v where v.voterId = :id")
-                .setParameter("id", id)
-                .resultList as List<Voter>).map {
-                    it.election
-                }
-
+        val voter: Voter = getById(id)
+        return entityManager
+            .createQuery("SELECT e FROM Election e WHERE :housing MEMBER e.housings and :year MEMBER e.year")
+            .setParameter("housing", voter.housing)
+            .setParameter("year", voter.year)
+            .resultList as List<Election>
     }
 
     fun addVote(vote: Vote) {
 
-        val voter = getVoter(vote.voterId, vote.electionId)
-        if (voter.hasVoted){
+        val electionVote: Vote? = entityManager
+            .createQuery("SELECT v FROM Vote v WHERE :voterId = v.voterId and :electionId = v.electionId")
+            .setParameter("voterId", vote.voterId)
+            .setParameter("electionId", vote.electionId)
+            .resultList.first() as Vote?
+
+        if (electionVote == null){
             throw IllegalArgumentException("Voter has already voted")
         }
         entityManager.persist(vote)
-        voter.hasVoted = true
-        entityManager.merge(voter)
 
     }
 
-    fun getVoter(voterId: Int, electionId: Int): Voter{
+    fun getVoter(voterId: Int): Voter{
         try {
             val voter: Voter = entityManager
-                .createQuery("SELECT v FROM Voter v WHERE v.voterId = :vId and v.election.id = :eId")
+                .createQuery("SELECT v FROM Voter v WHERE v.voterId = :vId")
                 .setParameter("vId", voterId)
-                .setParameter("eId", electionId)
                 .resultList.first() as Voter
 
             return voter
@@ -74,5 +72,4 @@ class VoterDao : Dao<Voter> {
             throw IllegalArgumentException("bad voter")
         }
     }
-
 }

@@ -15,58 +15,38 @@ class ElectionController @Autowired constructor(
         private val candidateDao: Dao<Candidate>
 ) {
 
-    @RequestMapping(value = "/electionController/addElection", method = arrayOf(RequestMethod.POST))
+    @RequestMapping(value = "/Election/addElection", method = arrayOf(RequestMethod.POST))
     fun addElection(@RequestBody election: Election): Election {
         electionDAO.insert(election)
         return election
-
     }
 
-    @RequestMapping(value = "/electionController/getById/{id}", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = "/Election/getElection/{id}", method = arrayOf(RequestMethod.GET))
     fun getElection(@PathVariable id: Int): Election {
         return electionDAO.getById(id)
     }
 
-    @RequestMapping(value = "/electionController/getCurrentElections", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = "/Election/getCurrentElections", method = arrayOf(RequestMethod.GET))
     fun getCurrentElections(): List<Election> {
          return (electionDAO as ElectionDao).getCurrentElections()
     }
 
-    @RequestMapping(value = "/electionController/getPastElections", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = "/Election/getPastElections", method = arrayOf(RequestMethod.GET))
     fun getPastElections(): List<Election> {
         return (electionDAO as ElectionDao).getPastElections()
     }
 
-    @RequestMapping(value = "/electionController/getCandidatesForElection/{id}", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = "/Election/getCandidatesForElection/{id}", method = arrayOf(RequestMethod.GET))
     fun getCandidatesForElection(@PathVariable id: Int): List<Candidate> {
         return (electionDAO as ElectionDao).getCandidatesForElection(id)
     }
 
-
-    @RequestMapping(value = "/electionController/getVotersForElection/{id}", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = "/Election/getVotersForElection/{id}", method = arrayOf(RequestMethod.GET))
     fun getVotersForElection(@PathVariable id: Int): List<Voter>{
         return (electionDAO as ElectionDao).getVotersForElection(id)
     }
 
-    @RequestMapping(value = "/electionController/addCandidate/{electionId}", method = arrayOf(RequestMethod.POST))
-    fun addCandidate(@PathVariable electionId: Int, @RequestBody candidate: Candidate): Candidate {
-        val election = electionDAO.getById(electionId)
-        try {
-            candidateDao.getById(candidate.id)
-        } catch (e: Exception){
-            candidateDao.insert(candidate)
-        }
-        (candidateDao as CandidateDao).addCandidateToElection(candidate, election)
-
-        return candidate
-    }
-
-    @RequestMapping(value = "/electionController/getCandidate/{id}", method = arrayOf(RequestMethod.GET))
-    fun getCandidate(@PathVariable id: Int): Candidate {
-        return candidateDao.getById(id)
-    }
-
-    @RequestMapping(value = "/electionController/postResults/{id}", method = arrayOf(RequestMethod.POST))
+    @RequestMapping(value = "/Election/postResults/{id}", method = arrayOf(RequestMethod.POST))
     fun postResults(@PathVariable id: Int, @RequestBody candidateResults: List<Result>){
         val election = electionDAO.getById(id)
         // if it is the day the election ends, add dates
@@ -76,7 +56,7 @@ class ElectionController @Autowired constructor(
                     val candidate = candidateDao.getById(candidatePair.candidateId)
                     (candidateDao as CandidateDao).addVotesForCandidate(candidate, election, candidatePair.votes)
                 }
-                electionDAO.update(Election(election.id, election.name, election.startDate, election.endDate, true))
+                electionDAO.update(Election(election.id, election.name, election.startDate, election.endDate, true, election.housings, election.year))
             } else {
                 throw IllegalArgumentException("Election has already been completed.")
             }
@@ -85,13 +65,13 @@ class ElectionController @Autowired constructor(
         }
     }
 
-    @RequestMapping(value = "/electionController/getResults/{id}", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = "/Election/getResults/{id}", method = arrayOf(RequestMethod.GET))
     fun getResults(@PathVariable id: Int): List<Result>{
         return(electionDAO as ElectionDao).getResults(id)
     }
 
 
-    @RequestMapping(value = "electionController/getVotes", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = "Election/getVotes", method = arrayOf(RequestMethod.GET))
     fun getVotes(): List<Vote>{
         return (electionDAO as ElectionDao).getAllVotes()
     }

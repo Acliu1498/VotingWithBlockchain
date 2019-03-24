@@ -15,7 +15,7 @@
 //
 //@ActiveProfiles("test")
 //@RunWith(SpringJUnit4ClassRunner::class)
-//@SpringBootTest(classes = arrayOf(PrototypeApplication::class))
+//@SpringBootTest(aClasses = arrayOf(PrototypeApplication::class))
 //class ElectionControllerTest {
 //
 //    @Autowired
