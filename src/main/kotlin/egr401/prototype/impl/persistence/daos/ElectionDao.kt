@@ -40,10 +40,6 @@ class ElectionDao: Dao<Election> {
 
     fun getAllVotes(): List<Vote> {
         val votes = entityManager.createQuery("SELECT v FROM Vote v").resultList as List<Vote>
-        for (vote in votes){
-            entityManager.remove(vote)
-        }
-
         return votes
     }
 
@@ -83,7 +79,6 @@ class ElectionDao: Dao<Election> {
                 .createQuery("select v from Voter v where v.election.id = :id")
                 .setParameter("id", id)
                 .resultList as List<Voter>
-
     }
 
     fun getResults(id:Int): List<Result>{

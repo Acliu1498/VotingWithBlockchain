@@ -14,5 +14,6 @@ data class Vote(
     @Id
     val candidateId: Int,
     @Id
-    val electionId: Int
+    val electionId: Int,
+    var stored: Boolean = false
 ): Serializable

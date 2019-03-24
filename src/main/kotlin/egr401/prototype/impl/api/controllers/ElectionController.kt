@@ -90,10 +90,16 @@ class ElectionController @Autowired constructor(
         return(electionDAO as ElectionDao).getResults(id)
     }
 
-
     @RequestMapping(value = "electionController/getVotes", method = arrayOf(RequestMethod.GET))
     fun getVotes(): List<Vote>{
-        return (electionDAO as ElectionDao).getAllVotes()
+        val votes: List<Vote> = (electionDAO as ElectionDao).getAllVotes()
+        val retVotes: MutableList<Vote> = mutableListOf()
+        for (vote in votes){
+            if(!vote.stored){
+                retVotes.add(vote)
+            }
+        }
+        return retVotes
     }
 
 }
