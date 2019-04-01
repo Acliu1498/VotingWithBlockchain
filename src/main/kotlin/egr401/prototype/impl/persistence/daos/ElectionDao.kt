@@ -36,11 +36,13 @@ class ElectionDao: Dao<Election> {
         entityManager.remove(obj)
     }
 
-
-
     fun getAllVotes(): List<Vote> {
         val votes = entityManager.createQuery("SELECT v FROM Vote v").resultList as List<Vote>
         return votes
+    }
+
+    fun updateVote(vote: Vote) {
+        entityManager.merge(vote)
     }
 
     fun getCurrentElections(): List<Election>{

@@ -103,10 +103,17 @@ class ElectionController @Autowired constructor(
     }
 
     @RequestMapping(value = "electionController/checkVotes", method = arrayOf(RequestMethod.POST))
-    fun checkRealtimeVotes(@PathVariable votes: List<Vote>) {
+    fun checkRealtimeVotes(): List<Vote> {
+        val votes: List<Vote> = (electionDAO as ElectionDao).getAllVotes()
+        val retVotes: MutableList<Vote> = mutableListOf()
         for(vote in votes){
-            
+            if(vote.stored){
+                retVotes.add(vote)
+                vote.stored = true
+                (electionDAO as ElectionDao).updateVote(vote)
+            }
         }
+        return retVotes
     }
 
 
