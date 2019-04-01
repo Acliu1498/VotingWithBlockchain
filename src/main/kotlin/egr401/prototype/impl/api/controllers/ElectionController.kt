@@ -102,4 +102,12 @@ class ElectionController @Autowired constructor(
         return retVotes
     }
 
+    @RequestMapping(value = "electionController/checkVotes", method = arrayOf(RequestMethod.POST))
+    fun checkRealtimeVotes(@PathVariable votes: List<Vote>) {
+        for(vote in votes){
+            
+        }
+    }
+
+
 }
