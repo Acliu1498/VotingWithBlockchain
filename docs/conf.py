@@ -26,7 +26,11 @@ author = 'Brandon Aldridge, Alexander Liu, Trevor Ragland, Gabriel Veloz'
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
+<<<<<<< HEAD
 release = '0.10'
+=======
+release = '0.1'
+>>>>>>> Created election class, DAO, and Controller for the election objects of the application
 
 
 # -- General configuration ---------------------------------------------------
@@ -41,7 +45,10 @@ release = '0.10'
 extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.coverage',
+<<<<<<< HEAD
     'sphinx.ext.viewcode',
+=======
+>>>>>>> Created election class, DAO, and Controller for the election objects of the application
     'sphinx.ext.githubpages',
 ]
 
