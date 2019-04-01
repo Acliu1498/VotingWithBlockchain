@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.lang.IllegalArgumentException
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @RestController
 class ElectionController @Autowired constructor(
@@ -70,7 +71,7 @@ class ElectionController @Autowired constructor(
     fun postResults(@PathVariable id: Int, @RequestBody candidateResults: List<Result>){
         val election = electionDAO.getById(id)
         // if it is the day the election ends, add dates
-        if(election.endDate.isBefore(LocalDate.now()) || election.endDate.equals(LocalDate.now())) {
+        if(election.endDate.isBefore(LocalDateTime.now()) || election.endDate.equals(LocalDateTime.now())) {
             if (!election.finished) {
                 for (candidatePair in candidateResults) {
                     val candidate = candidateDao.getById(candidatePair.candidateId)
