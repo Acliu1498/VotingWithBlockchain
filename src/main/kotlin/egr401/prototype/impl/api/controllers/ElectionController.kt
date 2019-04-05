@@ -7,7 +7,6 @@ import egr401.prototype.inter.persistence.daos.Dao
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.lang.IllegalArgumentException
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 @RestController
@@ -71,13 +70,13 @@ class ElectionController @Autowired constructor(
     fun postResults(@PathVariable id: Int, @RequestBody candidateResults: List<Result>){
         val election = electionDAO.getById(id)
         // if it is the day the election ends, add dates
-        if(election.endDate.isBefore(LocalDateTime.now()) || election.endDate.equals(LocalDateTime.now())) {
+        if(election.endDateTime.isBefore(LocalDateTime.now()) || election.endDateTime.equals(LocalDateTime.now())) {
             if (!election.finished) {
                 for (candidatePair in candidateResults) {
                     val candidate = candidateDao.getById(candidatePair.candidateId)
                     (candidateDao as CandidateDao).addVotesForCandidate(candidate, election, candidatePair.votes)
                 }
-                electionDAO.update(Election(election.id, election.name, election.startDate, election.endDate, true))
+                electionDAO.update(Election(election.id, election.name, election.startDateTime, election.endDateTime, true))
             } else {
                 throw IllegalArgumentException("Election has already been completed.")
             }
@@ -96,8 +95,10 @@ class ElectionController @Autowired constructor(
         val votes: List<Vote> = (electionDAO as ElectionDao).getAllVotes()
         val retVotes: MutableList<Vote> = mutableListOf()
         for (vote in votes){
-            if(!vote.stored){
+            if(!vote.hasStored){
                 retVotes.add(vote)
+                vote.hasStored = true
+                electionDAO.updateVote(vote)
             }
         }
         return retVotes
@@ -108,9 +109,9 @@ class ElectionController @Autowired constructor(
         val votes: List<Vote> = (electionDAO as ElectionDao).getAllVotes()
         val retVotes: MutableList<Vote> = mutableListOf()
         for(vote in votes){
-            if(vote.stored){
+            if(vote.hasStored){
                 retVotes.add(vote)
-                vote.stored = true
+                vote.hasStored = true
                 (electionDAO as ElectionDao).updateVote(vote)
             }
         }
