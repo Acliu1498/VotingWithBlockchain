@@ -11,7 +11,7 @@ data class Election(
         @GeneratedValue(strategy = GenerationType.AUTO)
         val id: Int,
         val name: String,
-        val startDate: LocalDateTime,
-        val endDate: LocalDateTime,
+        val startDateTime: LocalDateTime,
+        val endDateTime: LocalDateTime,
         val finished: Boolean = false
 )

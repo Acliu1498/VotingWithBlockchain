@@ -121,7 +121,7 @@
   }
 
   /**
-   * Create a comp function. If the user has preferences stored in
+   * Create a comp function. If the user has preferences hasStored in
    * the sortBy cookie, use those, otherwise use the default.
    */
   function initComparator() {
