@@ -36,8 +36,11 @@ class VoterController @Autowired constructor(
 
     @RequestMapping(value = "/voterController/vote", method = arrayOf(RequestMethod.POST))
     fun vote(@RequestBody vote: Vote): Vote{
-        if((candidateDao as CandidateDao).isCandidateElection(vote.candidateId, vote.electionId)) {
+        val voter = (voterDao as VoterDao).getVoter(vote.voterId, vote.electionId)
+        if((candidateDao as CandidateDao).isCandidateElection(vote.candidateId, vote.electionId) || !voter.hasVoted) {
             (voterDao as VoterDao).addVote(vote)
+            voter.hasVoted = true
+            voterDao.update(voter)
         } else {
             throw IllegalArgumentException("Invalid vote")
         }

@@ -49,6 +49,7 @@ class VoterDao : Dao<Voter> {
 
     }
 
+    @Deprecated("new voterDAO to handle this")
     fun addVote(vote: Vote) {
 
         val voter = getVoter(vote.voterId, vote.electionId)
