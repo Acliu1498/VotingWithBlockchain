@@ -8,9 +8,6 @@ import javax.persistence.*
 @Table(name = "Vote")
 data class Vote(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Int,
-    @Id
     val voterId: Int,
     @Id
     val candidateId: Int,

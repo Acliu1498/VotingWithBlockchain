@@ -3,6 +3,7 @@ package egr401.prototype.impl.persistence.daos
 import egr401.prototype.data.model.Candidate
 import egr401.prototype.data.model.CandidateElection
 import egr401.prototype.data.model.Election
+import egr401.prototype.data.model.Vote
 import egr401.prototype.inter.persistence.daos.Dao
 import org.springframework.stereotype.Repository
 import javax.persistence.EntityManager
@@ -43,19 +44,21 @@ class CandidateDao : Dao<Candidate> {
         entityManager.persist(ce)
     }
 
-    fun isCandidateElection(candidateId: Int, electionId: Int): Boolean{
+    fun getCandidateElection(candidateId: Int, electionId: Int): CandidateElection{
         // returns if the candidate is a part of the election
-        return !entityManager
+        return entityManager
             .createQuery("SELECT ce FROM CandidateElection ce WHERE ce.candidate.id = :cId AND ce.election.id = :eId")
             .setParameter("cId", candidateId)
             .setParameter("eId", electionId)
-            .resultList.isEmpty()
+            .resultList.first() as CandidateElection
     }
 
-    fun addVotesForCandidate(candidate: Candidate, election: Election, votes: Int){
+    fun setVotesForCandidate(candidate: Candidate, election: Election, votes: Int){
         val newCandidateElection = CandidateElection(candidate, election, votes)
         entityManager.merge(newCandidateElection)
     }
+
+
 
 
 }
