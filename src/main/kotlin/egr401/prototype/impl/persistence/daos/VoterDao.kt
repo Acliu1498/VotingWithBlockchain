@@ -49,8 +49,8 @@ class VoterDao : Dao<Voter> {
 
     }
 
+    // adds a temporary vote to the database
     fun addVote(vote: Vote) {
-
         val voter = getVoter(vote.voterId, vote.electionId)
         if (voter.hasVoted){
             throw IllegalArgumentException("Voter has already voted")
