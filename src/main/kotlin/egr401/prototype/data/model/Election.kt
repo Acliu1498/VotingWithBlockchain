@@ -1,7 +1,6 @@
 package egr401.prototype.data.model
 
-import com.fasterxml.jackson.annotation.JsonFormat
-import java.util.*
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
@@ -12,10 +11,7 @@ data class Election(
         @GeneratedValue(strategy = GenerationType.AUTO)
         val id: Int,
         val name: String,
-
-        @Temporal(TemporalType.DATE)
-        val startDate: Date,
-        @Temporal(TemporalType.DATE)
-        val endDate: Date,
+        val startDateTime: LocalDateTime,
+        val endDateTime: LocalDateTime,
         val finished: Boolean = false
 )

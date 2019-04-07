@@ -5,6 +5,7 @@ import egr401.prototype.inter.persistence.daos.Dao
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
@@ -36,21 +37,19 @@ class ElectionDao: Dao<Election> {
         entityManager.remove(obj)
     }
 
-
-
     fun getAllVotes(): List<Vote> {
         val votes = entityManager.createQuery("SELECT v FROM Vote v").resultList as List<Vote>
-        for (vote in votes){
-            entityManager.remove(vote)
-        }
-
         return votes
+    }
+
+    fun updateVote(vote: Vote) {
+        entityManager.merge(vote)
     }
 
     fun getCurrentElections(): List<Election>{
         // queries database for elections that have not yet past their end dates
         return entityManager
-            .createQuery("SELECT e FROM Election e WHERE e.endDate > " + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE))
+            .createQuery("SELECT e FROM Election e WHERE e.endDateTime > \'" + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME).replace('T', ' ') + "\'")
             .resultList as List<Election>
 
     }
@@ -58,7 +57,7 @@ class ElectionDao: Dao<Election> {
     fun getPastElections(): List<Election>{
         // queries database for elections that have past their end date
         return entityManager
-            .createQuery("SELECT e FROM Election e WHERE e.endDate <= " + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE))
+            .createQuery("SELECT e FROM Election e WHERE e.endDateTime <= \'" + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME).replace('T', ' ') + "\'")
             .resultList as List<Election>
     }
 
@@ -83,8 +82,23 @@ class ElectionDao: Dao<Election> {
                 .createQuery("select v from Voter v where v.election.id = :id")
                 .setParameter("id", id)
                 .resultList as List<Voter>
-
     }
 
+    fun getResults(id:Int): List<Result>{
+        val ces: List<CandidateElection>  = entityManager
+            .createQuery("SELECT ce from CandidateElection ce where ce.election.id = :id")
+            .setParameter("id", id)
+            .resultList as List<CandidateElection>
+        val results: MutableList<Result> = mutableListOf()
+        for (ce in ces){
+            val result: Result = Result(ce.candidate.id, ce.votes)
+            results.add(result)
+        }
 
+        return results
+    }
+
+    fun deleteVote(vote: Vote){
+        entityManager.remove(if (entityManager.contains(vote)) vote else entityManager.merge(vote))
+    }
 }

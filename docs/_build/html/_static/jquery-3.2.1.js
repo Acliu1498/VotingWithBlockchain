@@ -4104,7 +4104,7 @@ Data.prototype = {
 		// which value to return, respectively either:
 		//
 		//   1. The entire cache object
-		//   2. The data stored at the key
+		//   2. The data hasStored at the key
 		//
 		if ( key === undefined ||
 				( ( key && typeof key === "string" ) && value === undefined ) ) {
@@ -6118,7 +6118,7 @@ var getStyles = function( elem ) {
 
 		documentElement.removeChild( container );
 
-		// Nullify the div so it wouldn't be stored in the memory and
+		// Nullify the div so it wouldn't be hasStored in the memory and
 		// it will also be a sign that checks already performed
 		div = null;
 	}
@@ -7891,7 +7891,7 @@ jQuery.fn.extend( {
 				// If the element has a class name or if we're passed `false`,
 				// then remove the whole classname (if there was one, the above saved it).
 				// Otherwise bring back whatever was previously saved (if anything),
-				// falling back to the empty string if nothing was stored.
+				// falling back to the empty string if nothing was hasStored.
 				if ( this.setAttribute ) {
 					this.setAttribute( "class",
 						className || value === false ?

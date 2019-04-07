@@ -40,14 +40,17 @@ class VoterDao : Dao<Voter> {
     }
 
     fun getElectionsByStudentId(id: Int): List<Election> {
-        return entityManager
-                .createQuery("select e from Election e where e.id == $id")
-                .resultList as List<Election>
+        return (entityManager
+                .createQuery("select v from Voter v where v.voterId = :id")
+                .setParameter("id", id)
+                .resultList as List<Voter>).map {
+                    it.election
+                }
 
     }
 
+    // adds a temporary vote to the database
     fun addVote(vote: Vote) {
-
         val voter = getVoter(vote.voterId, vote.electionId)
         if (voter.hasVoted){
             throw IllegalArgumentException("Voter has already voted")
