@@ -98,5 +98,7 @@ class ElectionDao: Dao<Election> {
         return results
     }
 
-
+    fun deleteVote(vote: Vote){
+        entityManager.remove(if (entityManager.contains(vote)) vote else entityManager.merge(vote))
+    }
 }
