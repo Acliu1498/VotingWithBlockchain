@@ -10,6 +10,5 @@ data class Candidate(
         val email: String,
         val lastName: String,
         val firstName: String,
-        val resume: String = "",
-        val image: String = ""
+        val resume: String
 )
