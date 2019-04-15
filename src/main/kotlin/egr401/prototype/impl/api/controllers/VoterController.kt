@@ -6,6 +6,7 @@ import egr401.prototype.impl.persistence.daos.VoterDao
 import egr401.prototype.inter.persistence.daos.Dao
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
 import javax.persistence.Id
 
 
@@ -42,7 +43,14 @@ class VoterController @Autowired constructor(
 
     @RequestMapping(value = "/voterController/getElectionsForVoter/{id}", method = arrayOf(RequestMethod.GET))
     fun getElectionsForVoter(@PathVariable id: Int): List<Election>{
-        return (voterDao as VoterDao).getElectionsByStudentId(id)
+        val elections: MutableList<Election> = mutableListOf()
+        val voterElections = (voterDao as VoterDao).getElectionsByStudentId(id)
+        for(election in voterElections) {
+            if (election.startDateTime.isBefore(LocalDateTime.now()) && election.endDateTime.isAfter(LocalDateTime.now())){
+                elections.add(election)
+            }
+        }
+        return elections
     }
 
     @RequestMapping(value = "/voterController/vote", method = arrayOf(RequestMethod.POST))
