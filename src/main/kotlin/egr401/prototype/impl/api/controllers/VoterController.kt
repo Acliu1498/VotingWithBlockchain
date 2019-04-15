@@ -24,6 +24,14 @@ class VoterController @Autowired constructor(
         return voter
     }
 
+    @RequestMapping(value = "/voterController/addVoters", method = arrayOf(RequestMethod.POST))
+    fun addVoters(@RequestBody voters: List<Voter>): List<Voter>{
+        for(voter in voters){
+            voterDao.insert(voter)
+        }
+        return voters
+    }
+
     /**
      * gets a voter given the id and election
      */
