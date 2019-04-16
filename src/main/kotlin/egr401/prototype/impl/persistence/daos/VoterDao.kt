@@ -38,7 +38,7 @@ class VoterDao : Dao<Voter> {
     override fun delete(obj: Voter) {
         entityManager.remove(obj)
     }
-
+    // changes
     fun getElectionsByStudentId(id: Int): List<Election> {
         return (entityManager
                 .createQuery("select v from Voter v where v.voterId = :id")
