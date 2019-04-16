@@ -159,5 +159,6 @@ class ElectionController @Autowired constructor(
         }
         return results
     }
+            
 
 }

@@ -43,10 +43,11 @@ class VoterDao : Dao<Voter> {
         return (entityManager
                 .createQuery("select v from Voter v where v.voterId = :id")
                 .setParameter("id", id)
-                .resultList as List<Voter>).map {
+                .resultList as List<Voter>).filter{
+                    !it.hasVoted
+                }.map {
                     it.election
                 }
-
     }
 
     // adds a temporary vote to the database
